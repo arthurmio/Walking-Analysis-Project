@@ -1,0 +1,28 @@
+# pour se connecter avec son compte au répertoire git
+git config --global user.email sam@google.com
+
+# pour ajouter des fichiers à l'index. /!\à réaliser avant le commit
+git add temp.txt
+
+# commit
+git commit –m “Description du commit”
+
+# Création d'une branche
+command git checkout -b nom-branche
+
+# Passer d'une branche à une autre
+git checkout nom-branche
+
+# push le commit sur la branche actuelle de github
+git push
+
+# affiche fichiers modifiés et ceux qui doivent être add ou validés
+git status
+
+# fusionne les modifs sur le dépôt distant dans le répertoire de travail local
+git pull
+
+# fusionne une branche dans la branche active
+git merge nom-branche
+
+# chercher sur ce lien pour plus de commande : https://www.hostinger.fr/tutoriels/commandes-git/
