@@ -4,4 +4,7 @@ sudo apt-get install python3 python-dev python3-dev \
      libxml2-dev libxslt1-dev zlib1g-dev \
      python-pip
 sudo apt-get install libbluetooth-dev
-alias python=python3
+sudo apt-get install libboost-python-dev
+sudo python3 -m pip install pybluez
+sudo alias python=python3
+pip3 install vpython
