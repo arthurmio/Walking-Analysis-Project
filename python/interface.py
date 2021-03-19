@@ -2,6 +2,13 @@
 # coding: utf-8
 
 from tkinter import *
+import matplotlib
+matplotlib.use("TkAgg")
+
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
 #-------------creation de l'interface graphique---------------
 
 # creation de la fenetre
@@ -27,8 +34,14 @@ def interfaceGraphique():
 	frame3 = Frame(frame, bg='white')
 	
 	# creation de la console
-	console = Label(frame1, text="Console", bg="white", pady=2)#, padx=300, pady=200)
+	console = Label(frame1, text="Console", bg="white")#, padx=300, pady=200)
 	console.pack(side='left')
+	
+	# creation graphe
+	figure = Figure(figsize=(5,4), dpi=100)
+	plot = figure.add_subplot(1, 1, 1)
+	canvas = FigureCanvasTkAgg(figure, frame2)
+	canvas.get_tk_widget().pack()
 	
 	# creation bouton
 	bouton_connect = Button(frame3, text='Connect')
@@ -48,7 +61,7 @@ def interfaceGraphique():
 	
 	
 	frame1.grid(row=1, column=0)
-	frame2.grid(row=2, column=0, pady=150)
+	frame2.grid(row=2, column=0)
 	frame3.grid(row=3, column=0)
 	
 	frame.pack(expand="yes")
