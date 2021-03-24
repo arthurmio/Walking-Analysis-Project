@@ -44,13 +44,6 @@ void setup(void)
 
   delay(1000);
 
-  /* Display the current temperature */
-  int8_t temp = bno.getTemp();
-  Serial.print("Current Temperature: ");
-  Serial.print(temp);
-  Serial.println(" C");
-  Serial.println("");
-
   bno.setExtCrystalUse(true);
 
   Serial.println("Calibration status values: 0=uncalibrated, 3=fully calibrated");
@@ -74,13 +67,13 @@ void loop(void)
   imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 
   /* Display the floating point data */
-  Serial.print("Yaw: ");
+  // Serial.print("Yaw: ");
   Serial.print(euler.x());
-  Serial.print(" Pitch: ");
+  Serial.print(",");
   Serial.print(euler.y());
-  Serial.print(" Roll: ");
+  Serial.print(",");
   Serial.print(euler.z());
-  Serial.print("\t\t");
+  Serial.print("\n");
 
   /*
   // Quaternion data
@@ -97,7 +90,7 @@ void loop(void)
   */
 
   /* Display calibration status for each sensor. */
-  uint8_t system, gyro, accel, mag = 0;
+  /*uint8_t system, gyro, accel, mag = 0;
   bno.getCalibration(&system, &gyro, &accel, &mag);
   Serial.print("CALIBRATION: Sys=");
   Serial.print(system, DEC);
@@ -106,7 +99,7 @@ void loop(void)
   Serial.print(" Accel=");
   Serial.print(accel, DEC);
   Serial.print(" Mag=");
-  Serial.println(mag, DEC);
+  Serial.println(mag, DEC);*/
 
   delay(BNO055_SAMPLERATE_DELAY_MS);
 }

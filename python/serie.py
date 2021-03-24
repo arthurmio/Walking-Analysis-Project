@@ -10,11 +10,10 @@ while(1==1) :
         pass
     dataPacket=arduinoData.readline()
     dataPacket= str(dataPacket,'utf-8')
-    #splitPacket=dataPacket.split(',')
-    #Yaw=float(splitPacket[0])
-    #Pitch=float(splitPacket[1])
-    #Roll=float(splitPacket[2])
-    #print("Yaw: ",Yaw," Pitch:",Pitch," Roll:",Roll)
-    print(dataPacket)
+    splitPacket=dataPacket.split(',')
+    Yaw=float(splitPacket[0])
+    Pitch=float(splitPacket[1])
+    Roll=float(splitPacket[2])
+    print("Yaw: ",Yaw," Pitch:",Pitch," Roll:",Roll)
     time.sleep(0.1)
 
