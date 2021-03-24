@@ -21,7 +21,7 @@ def close_window():
 def interfaceGraphique():
 	# Personnalisation fenetre
 	window.title("Moniteur série arduino")
-	window.geometry("700x400")
+	window.geometry("700x500")
 	window.minsize(300,200)
 	window.maxsize(1080,720)
 	window.config(background='white')

@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# creation de la connexion serie
-from serial import *
-# Port série ttyACM0
-# Vitesse de baud : 9600
-# Timeout en lecture : 1 sec
-# Timeout en écriture : 1 sec
-with Serial(port="/dev/ttyACM0", baudrate=9600, timeout=1, writeTimeout=1) as port_serie:
-    if port_serie.isOpen():
-        while True:
-            ligne = port_serie.read_line()
-            print ligne
-nombre = input("Entrez un nombre : ")
-port_serie.write(nombre.encode('ascii'))
+import serial
+import time
+arduinoData=serial.Serial('COM4', 115200)
+time.sleep(1)
+while(1==1) :
+    while (arduinoData.inWaiting()==0) :
+        pass
+    dataPacket=arduinoData.readline()
+    dataPacket= str(dataPacket,'utf-8')
+    #splitPacket=dataPacket.split(',')
+    #Yaw=float(splitPacket[0])
+    #Pitch=float(splitPacket[1])
+    #Roll=float(splitPacket[2])
+    #print("Yaw: ",Yaw," Pitch:",Pitch," Roll:",Roll)
+    print(dataPacket)
+    time.sleep(0.1)
+
