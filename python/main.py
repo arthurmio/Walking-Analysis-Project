@@ -4,5 +4,3 @@
 from interface import *
 
 interfaceGraphique()
-
-

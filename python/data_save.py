@@ -10,11 +10,13 @@
 
 import math
 import sys
+import csv
 import numpy as np
 import time
 import serial
 import matplotlib.pyplot as plt
 from itertools import count
+from operator import itemgetter
 
 # --------------------
 # -- INITIALISATION --
@@ -107,7 +109,7 @@ while(decompte<30) :
         y_vals21.append(Yaw)
         y_vals22.append(Pitch)
         y_vals23.append(Roll)
-    if(index==3):
+    elif(index==3):
         x_vals3.append(time)
         y_vals31.append(Yaw)
         y_vals32.append(Pitch)
@@ -117,12 +119,12 @@ while(decompte<30) :
         y_vals41.append(Yaw)
         y_vals42.append(Pitch)
         y_vals43.append(Roll)
-    if(index==5):
+    elif(index==5):
         x_vals5.append(time)
         y_vals51.append(Yaw)
         y_vals52.append(Pitch)
         y_vals53.append(Roll)
-    if(index==6):
+    elif(index==6):
         x_vals6.append(time)
         y_vals61.append(Yaw)
         y_vals62.append(Pitch)
@@ -135,11 +137,15 @@ while(decompte<30) :
     print("index: ",index, "Yaw: ",Yaw," Pitch:",Pitch," Roll:",Roll)
     f.write(str(index)+ ' ')
     f.write(str(time)+ ' ')
-    f.write(str(decompte)+ ' ')
     f.write(str(Yaw)+ ' ')
     f.write(str(Pitch)+ ' ')
     f.write(str(Roll)+ '\n')
     decompte += 1
+
+reader = csv.reader(open(fichier), delimiter="\t")
+
+for line in sorted(reader, key=itemgetter(0)): # sort en fonction de l'index
+    print(line)
 
 f.close() # fermeture fichier
 
@@ -149,6 +155,7 @@ f.close() # fermeture fichier
 # affichage jambe droite
 plt.figure(1)
 plt.subplot(311)
+plt.grid()
 plt.title("Jambe droite haut") # Titre
 plt.xlabel('time(ms)')         # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll')   # Légende ordonnée
@@ -157,6 +164,7 @@ plt.plot(x_vals1,y_vals12,color='g',linewidth=1, label='Pitch1') # Tracé du Pit
 plt.plot(x_vals1,y_vals13,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
 
 plt.subplot(312)
+plt.grid()
 plt.title("Jambe droite milieu") # Titre
 plt.xlabel('time(ms)')           # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll')     # Légende ordonnée
@@ -165,6 +173,7 @@ plt.plot(x_vals2,y_vals22,color='g',linewidth=1, label='Pitch2') # Tracé du Pit
 plt.plot(x_vals2,y_vals23,color='r',linewidth=1, label='Roll2')  # Tracé du Roll
 
 plt.subplot(313)
+plt.grid()
 plt.title("Jambe droite bas") # Titre
 plt.xlabel('time(ms)')        # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll')  # Légende ordonnée
@@ -175,6 +184,7 @@ plt.plot(x_vals3,y_vals33,color='r',linewidth=1, label='Roll3')  # Tracé du Rol
 # affichage jambe gauche
 plt.figure(2)
 plt.subplot(311)
+plt.grid()
 plt.title("Jambe Gauche haut") # Titre
 plt.xlabel('time(ms)')         # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll')   # Légende ordonnée
@@ -183,6 +193,7 @@ plt.plot(x_vals4,y_vals42,color='g',linewidth=1, label='Pitch4') # Tracé du Pit
 plt.plot(x_vals4,y_vals43,color='r',linewidth=1, label='Roll4')  # Tracé du Roll
 
 plt.subplot(312)
+plt.grid()
 plt.title("Jambe Gauche milieu") # Titre
 plt.xlabel('time(ms)')           # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll')     # Légende ordonnée
@@ -191,6 +202,7 @@ plt.plot(x_vals5,y_vals52,color='g',linewidth=1, label='Pitch5') # Tracé du Pit
 plt.plot(x_vals5,y_vals53,color='r',linewidth=1, label='Roll5')  # Tracé du Roll
 
 plt.subplot(313)
+plt.grid()
 plt.title("Jambe Gauche bas") # Titre
 plt.xlabel('time(ms)')        # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll')  # Légende ordonnée
@@ -200,6 +212,7 @@ plt.plot(x_vals6,y_vals63,color='r',linewidth=1, label='Roll6')  # Tracé du Rol
 
 # affichage centrale
 plt.figure(3)
+plt.grid()
 plt.title("Centrale")        # Titre
 plt.xlabel('time(ms)')       # Légende abscisse
 plt.ylabel('Yaw/Pitch/Roll') # Légende ordonnée
@@ -207,5 +220,4 @@ plt.plot(x_vals7,y_vals71,color='b',linewidth=1, label='Yaw7')   # Tracé du Yaw
 plt.plot(x_vals7,y_vals72,color='g',linewidth=1, label='Pitch7') # Tracé du Pitch
 plt.plot(x_vals7,y_vals73,color='r',linewidth=1, label='Roll7')  # Tracé du Roll
 
-plt.grid() # Ajout d'une grille
 plt.show() # Afficher
