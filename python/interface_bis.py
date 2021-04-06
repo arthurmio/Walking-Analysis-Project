@@ -1,7 +1,7 @@
 # -------------------------------------------------------
 # -------------------------------------------------------
 # Projet : Walking Analysis Project
-# Titre  : Interface arduino avec lissage courbe
+# Titre  : Interface arduino sans lissage courbe
 # Auteur : Mathéo Gourdon - Arthur Mariano - Ianis Trigui
 # Date   : 06/04/2021
 # Github : arthurmio
@@ -94,7 +94,7 @@ def serialConnect():
 	decompte = 0
 	arduinoData=serial.Serial('COM4', 115200)
 	time.sleep(1)
-	while(decompte<50) : # nomre d'acquisitions
+	while(decompte<100) : # nomre d'acquisitions
 		while (arduinoData.inWaiting()==0) :
 			pass
 		# lecture du yaw/pitch/roll de l'arduino
@@ -201,27 +201,27 @@ class StartPage(tk.Frame):
         label.pack()
 
         # Creation graphe
-        xs_7  = np.array(x_vals7)
-        ys_71 = np.array(y_vals71)
-        ys_72 = np.array(y_vals72)
-        ys_73 = np.array(y_vals73)
+        xs   = np.array(x_vals7)
+        ys_1 = np.array(y_vals71)
+        ys_2 = np.array(y_vals72)
+        ys_3 = np.array(y_vals73)
         # lissage courbe
-        model71 = make_interp_spline(xs_7, ys_71)
-        model72 = make_interp_spline(xs_7, ys_72)
-        model73 = make_interp_spline(xs_7, ys_73)
-        xs7  = np.linspace(min(x_vals7),max(x_vals7),500)
-        ys71 = model71(xs7)
-        ys72 = model72(xs7)
-        ys73 = model73(xs7)
+        model1 = make_interp_spline(xs, ys_1)
+        model2 = make_interp_spline(xs, ys_2)
+        model3 = make_interp_spline(xs, ys_3)
+        xs1 = np.linspace(min(x_vals7),max(x_vals7),500)
+        ys1 = model1(xs1)
+        ys2 = model2(xs1)
+        ys3 = model3(xs1)
         figure = Figure(figsize=(5,4), dpi=100)
         plot1 = figure.add_subplot(111)
         plot1.grid()
         plot1.set_title("Centrale")         # Titre
         plot1.set_xlabel('time(s)')         # Légende abscisse
         plot1.set_ylabel('Yaw/Pitch/Roll')  # Légende ordonnée
-        plot1.plot(xs7,ys71,color='b', linewidth=1, label='Yaw')   # Tracé du Yaw
-        plot1.plot(xs7,ys72,color='g', linewidth=1, label='Pitch') # Tracé du Pitch
-        plot1.plot(xs7,ys73,color='r', linewidth=1, label='Roll')  # Tracé du Roll
+        plot1.plot(xs1,ys1,color='b', linewidth=1, label='Yaw')   # Tracé du Yaw
+        plot1.plot(xs1,ys2,color='g', linewidth=1, label='Pitch') # Tracé du Pitch
+        plot1.plot(xs1,ys3,color='r', linewidth=1, label='Roll')  # Tracé du Roll
         canvas = FigureCanvasTkAgg(figure, frame2)
         canvas.get_tk_widget().pack()
         
@@ -254,81 +254,33 @@ class PageOne(tk.Frame):
         frame2 = tk.Frame(frame, bg='white')
         frame3 = tk.Frame(frame, bg='white')
 
-        #img = tk.PhotoImage(file='./python/photos/logo.png')
-        #img = img.subsample(2,2)
-        #img.resize((30,20))
-        #logo = tk.Label(frame1, image = img)
         label  = tk.Label(frame1, text="Walking Analysis Project / Jambe Gauche", bg="white", font=("Nueva Std",20))
-        #logo.pack(side='left')
         label.pack()
 
         # Creation graphe
-        xs_1  = np.array(x_vals1)
-        ys_11 = np.array(y_vals11)
-        ys_12 = np.array(y_vals12)
-        ys_13 = np.array(y_vals13)
-        xs_2  = np.array(x_vals2)
-        ys_21 = np.array(y_vals21)
-        ys_22 = np.array(y_vals22)
-        ys_23 = np.array(y_vals23)
-        xs_3  = np.array(x_vals3)
-        ys_31 = np.array(y_vals31)
-        ys_32 = np.array(y_vals32)
-        ys_33 = np.array(y_vals33)
-        # lissage courbe
-        model11 = make_interp_spline(xs_1, ys_11)
-        model12 = make_interp_spline(xs_1, ys_12)
-        model13 = make_interp_spline(xs_1, ys_13)
-        model21 = make_interp_spline(xs_2, ys_21)
-        model22 = make_interp_spline(xs_2, ys_22)
-        model23 = make_interp_spline(xs_2, ys_23)
-        model31 = make_interp_spline(xs_3, ys_31)
-        model32 = make_interp_spline(xs_3, ys_32)
-        model33 = make_interp_spline(xs_3, ys_33)
-        xs1  = np.linspace(min(x_vals1),max(x_vals1),500)
-        xs2  = np.linspace(min(x_vals2),max(x_vals2),500)
-        xs3  = np.linspace(min(x_vals3),max(x_vals3),500)
-        ys11 = model11(xs1)
-        ys12 = model12(xs1)
-        ys13 = model13(xs1)
-        ys21 = model21(xs2)
-        ys22 = model22(xs2)
-        ys23 = model23(xs2)
-        ys31 = model31(xs3)
-        ys32 = model32(xs3)
-        ys33 = model33(xs3)
         figure = Figure(figsize=(5,4), dpi=100)
-        plot1  = figure.add_subplot(311)
+        plot1 = figure.add_subplot(311)
         plot1.grid()
-        plot1.set_title("Jambe droite haut", fontsize=8) # Titre
-        # plot1.plot(x_vals1,y_vals11,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        # plot1.plot(x_vals1,y_vals12,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        # plot1.plot(x_vals1,y_vals13,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
-        plot1.plot(xs1,ys11,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        plot1.plot(xs1,ys12,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        plot1.plot(xs1,ys13,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
+        plot1.set_title("Jambe gauche haut", fontsize=8) # Titre
+        plot1.plot(x_vals1,y_vals11,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
+        plot1.plot(x_vals1,y_vals12,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
+        plot1.plot(x_vals1,y_vals13,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
         
         plot2 = figure.add_subplot(312)
         plot2.grid()
-        plot2.set_title("Jambe droite milieu", fontsize=8) # Titre
-        # plot2.plot(x_vals2,y_vals21,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        # plot2.plot(x_vals2,y_vals22,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        # plot2.plot(x_vals2,y_vals23,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
-        plot2.plot(xs2,ys21,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        plot2.plot(xs2,ys22,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        plot2.plot(xs2,ys23,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
+        plot2.set_title("Jambe gauche milieu", fontsize=8) # Titre
+        plot2.plot(x_vals2,y_vals21,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
+        plot2.plot(x_vals2,y_vals22,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
+        plot2.plot(x_vals2,y_vals23,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
 
         plot3 = figure.add_subplot(313)
         plot3.grid()
-        plot3.set_title("Jambe droite bas", fontsize=8) # Titre
+        plot3.set_title("Jambe gauche bas", fontsize=8) # Titre
         plot3.set_xlabel('time(s)', fontsize=8)         # Légende abscisse
         plot3.set_ylabel('Yaw/Pitch/Roll', fontsize=8)  # Légende ordonnée
-        # plot3.plot(x_vals3,y_vals31,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        # plot3.plot(x_vals3,y_vals32,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        # plot3.plot(x_vals3,y_vals33,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
-        plot3.plot(xs3,ys31,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        plot3.plot(xs3,ys32,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        plot3.plot(xs3,ys33,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
+        plot3.plot(x_vals3,y_vals31,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
+        plot3.plot(x_vals3,y_vals32,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
+        plot3.plot(x_vals3,y_vals33,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
 
         canvas = FigureCanvasTkAgg(figure, frame2)
         canvas.get_tk_widget().pack()
@@ -366,72 +318,29 @@ class PageTwo(tk.Frame):
         label.pack()
 
         # Creation graphe
-        xs_4  = np.array(x_vals4)
-        ys_41 = np.array(y_vals41)
-        ys_42 = np.array(y_vals42)
-        ys_43 = np.array(y_vals43)
-        xs_5  = np.array(x_vals5)
-        ys_51 = np.array(y_vals51)
-        ys_52 = np.array(y_vals52)
-        ys_53 = np.array(y_vals53)
-        xs_6  = np.array(x_vals6)
-        ys_61 = np.array(y_vals61)
-        ys_62 = np.array(y_vals62)
-        ys_63 = np.array(y_vals63)
-        # lissage courbe
-        model41 = make_interp_spline(xs_4, ys_41)
-        model42 = make_interp_spline(xs_4, ys_42)
-        model43 = make_interp_spline(xs_4, ys_43)
-        model51 = make_interp_spline(xs_5, ys_51)
-        model52 = make_interp_spline(xs_5, ys_52)
-        model53 = make_interp_spline(xs_5, ys_53)
-        model61 = make_interp_spline(xs_6, ys_61)
-        model62 = make_interp_spline(xs_6, ys_62)
-        model63 = make_interp_spline(xs_6, ys_63)
-        xs4  = np.linspace(min(x_vals4),max(x_vals4),500)
-        xs5  = np.linspace(min(x_vals5),max(x_vals5),500)
-        xs6  = np.linspace(min(x_vals6),max(x_vals6),500)
-        ys41 = model41(xs4)
-        ys42 = model42(xs4)
-        ys43 = model43(xs4)
-        ys51 = model51(xs5)
-        ys52 = model52(xs5)
-        ys53 = model53(xs5)
-        ys61 = model61(xs6)
-        ys62 = model62(xs6)
-        ys63 = model63(xs6)
         figure = Figure(figsize=(5,4), dpi=100)
-        plot1  = figure.add_subplot(311)
+        plot1 = figure.add_subplot(311)
         plot1.grid()
-        plot1.set_title("Jambe gauche haut", fontsize=8) # Titre
-        # plot1.plot(x_vals4,y_vals41,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        # plot1.plot(x_vals4,y_vals42,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        # plot1.plot(x_vals4,y_vals43,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
-        plot1.plot(xs4,ys41,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        plot1.plot(xs4,ys42,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        plot1.plot(xs4,ys43,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
+        plot1.set_title("Jambe droite haut", fontsize=8) # Titre
+        plot1.plot(x_vals4,y_vals41,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
+        plot1.plot(x_vals4,y_vals42,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
+        plot1.plot(x_vals4,y_vals43,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
         
         plot2 = figure.add_subplot(312)
         plot2.grid()
-        plot2.set_title("Jambe gauche milieu", fontsize=8) # Titre
-        # plot2.plot(x_vals5,y_vals51,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        # plot2.plot(x_vals5,y_vals52,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        # plot2.plot(x_vals5,y_vals53,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
-        plot1.plot(xs5,ys51,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        plot1.plot(xs5,ys52,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        plot1.plot(xs5,ys53,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
+        plot2.set_title("Jambe droite milieu", fontsize=8) # Titre
+        plot2.plot(x_vals5,y_vals51,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
+        plot2.plot(x_vals5,y_vals52,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
+        plot2.plot(x_vals5,y_vals53,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
 
         plot3 = figure.add_subplot(313)
         plot3.grid()
-        plot3.set_title("Jambe gauche bas", fontsize=8) # Titre
+        plot3.set_title("Jambe droite bas", fontsize=8) # Titre
         plot3.set_xlabel('time(s)', fontsize=8)         # Légende abscisse
         plot3.set_ylabel('Yaw/Pitch/Roll', fontsize=8)  # Légende ordonnée
-        # plot3.plot(x_vals6,y_vals61,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        # plot3.plot(x_vals6,y_vals62,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        # plot3.plot(x_vals6,y_vals63,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
-        plot1.plot(xs6,ys61,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
-        plot1.plot(xs6,ys62,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
-        plot1.plot(xs6,ys63,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
+        plot3.plot(x_vals6,y_vals61,color='b',linewidth=1, label='Yaw1')   # Tracé du Yaw
+        plot3.plot(x_vals6,y_vals62,color='g',linewidth=1, label='Pitch1') # Tracé du Pitch
+        plot3.plot(x_vals6,y_vals63,color='r',linewidth=1, label='Roll1')  # Tracé du Roll
 
         canvas = FigureCanvasTkAgg(figure, frame2)
         canvas.get_tk_widget().pack()
