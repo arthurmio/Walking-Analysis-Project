@@ -1,136 +1,121 @@
-/*
-  Central
-*/
-
+#include <Arduino.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
+#include <utility/imumaths.h>
 #include <ArduinoBLE.h>
 
+Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28);
+char *Tabperiph[] = {"IMU Euler Angles", "IMU Euler Angles 2", "IMU Euler Angles 3", "IMU Euler Angles 4", "IMU Euler Angles 5", "IMU Euler Angles 6"};
+char *addr[] = {"1001", "1002", "1003", "1004", "1005", "1006"};
+
+
+
+// récupération des données des caractéristiques
+union dat{
+  unsigned char asdf[4];
+  float zxcv;
+};
+
+float getData(const unsigned char data[], int length) {
+  dat dat;
+  for (int i = 0; i < length; i++) {
+    dat.asdf[i] = data[i]; 
+    }
+  return dat.zxcv;
+}
+
+
+//affichage des caractéristiques
+void printChar(BLECharacteristic c1, BLECharacteristic c2, BLECharacteristic c3){
+  c1.read();
+  c2.read();
+  c3.read();
+  
+  float f1=getData(c1.value(), c1.valueLength());
+  float f2=getData(c2.value(), c2.valueLength());
+  float f3=getData(c3.value(), c3.valueLength());
+
+  // affichage slave
+  Serial.print(",");
+  Serial.print(f1); //Yaw
+  Serial.print(",");
+  Serial.print(f2); //Pitch
+  Serial.print(",");
+  Serial.println(f3); //Roll
+  
+}
 
 void setup() {
-  Serial.begin(9600);
-  while (!Serial);
+  Serial.begin(115200);
 
-  // initialize the BLE hardware
   BLE.begin();
+  bno.begin();
+  BLE.scan();
 
-  Serial.println("BLE Central - IMU");
-
-  // start scanning for peripherals
-  BLE.scanForUuid("590d65c7-3a0a-4023-a05a-6aaf2f22441c");
+  bno.setExtCrystalUse(true);
 }
 
 void loop() {
-  // check if a peripheral has been discovered
-  BLEDevice peripheral = BLE.available();
-
-  if (peripheral) {
-    // discovered a peripheral, print out address, local name, and advertised service
-    Serial.print("Found ");
-    Serial.print(peripheral.address());
-    Serial.print(" '");
-    Serial.print(peripheral.localName());
-    Serial.print("' ");
-    Serial.print(peripheral.advertisedServiceUuid());
-    Serial.println();
-
-    if (peripheral.localName() != "IMU Euler Angles") {
-      return;
-    }
-
-    // stop scanning
-    BLE.stopScan();
-
-    controlLed(peripheral);
-
-    // peripheral disconnected, start scanning again
-    BLE.scanForUuid("590d65c7-3a0a-4023-a05a-6aaf2f22441c");
-  }
-}
-
-void controlLed(BLEDevice peripheral) {
-  // connect to the peripheral
-  Serial.println("Connecting ...");
-
-  if (peripheral.connect()) {
-    Serial.println("Connected");
-  } else {
-    Serial.println("Failed to connect!");
-    return;
-  }
-
- 
-
-  // retrieve the LED characteristic
-  BLECharacteristic YawSlave = peripheral.characteristic("00000004-0000-1000-8000-00805f9b34fb");
-  BLECharacteristic PitchSlave = peripheral.characteristic("00000005-0000-1000-8000-00805f9b34fb");
-  BLECharacteristic RollSlave = peripheral.characteristic("00000006-0000-1000-8000-00805f9b34fb");
+  //time rebouclage
+  long myTime = millis();
+  float myMinutes = myTime/1000.0;
   
+  
+  
+ // if(peripheral){
+    for (int i=0; i<7; i++){
+      BLE.scan();
+      BLEDevice peripheral = BLE.available();
+      
+      if(peripheral.localName()==Tabperiph[i]){
+        BLE.stopScan();
+      
+//        if(peripheral.connect()){
+//          Serial.println("Connect1");
+//        }
+//        else{ return; }
+//      
+//        if(peripheral.discoverAttributes()){
+//          Serial.println("Connect2");
+//        }
+//        else{ return; }
 
- // while (peripheral.connected()) {
-    // while the peripheral is connected
+        peripheral.connect();
+        peripheral.discoverAttributes();
+      
+        BLEService euler=peripheral.service(addr[i]);
+        BLECharacteristic yaw=euler.characteristic("2001");
+        BLECharacteristic pitch=euler.characteristic("2002");
+        BLECharacteristic roll=euler.characteristic("2003");
 
-Serial.println("properties: ");
-            Serial.println(YawSlave.properties());
-
-if (!YawSlave.canWrite()){
-   Serial.println("canWrite False");}
-
-if (!YawSlave.canSubscribe()){
-   Serial.println("canSubscribe False");}
-
-
-if(!YawSlave.canRead()){
-      Serial.println("canRead False");}
-
-
-if(!YawSlave.valueUpdated()){
-      Serial.println("valueUpdated False");}
-     
-  while (peripheral.connected()) {
-//if (YawSlave.valueUpdated()) {
-
-uint16_t holdvalues[6] = {1,2,3,4,5,6} ;
-
-YawSlave.readValue(holdvalues, 6);
-byte rawValue0 = holdvalues[0];
-byte rawValue1 = holdvalues[1];
-byte rawValue2 = holdvalues[2];
-byte rawValue3 = holdvalues[3];
-byte rawValue4 = holdvalues[4];
-byte rawValue5 = holdvalues[5];
-
-    Serial.print("value 0: ");
-    Serial.print(rawValue0);
-    Serial.print("  value 1: ");
-    Serial.print(rawValue1);
-    Serial.print("  value 2: ");
-    Serial.print(rawValue2);
-      Serial.print("  value 3: ");
-    Serial.print(rawValue3);
-    Serial.print("  value 4: ");
-    Serial.print(rawValue4);
-    Serial.print("  value 5: ");
-    Serial.println(rawValue5); 
-   
-   // printData(YawSlave.value(), YawSlave.valueLength());
-    delay(500);
-     /*if (YawSlave.read()) {
-      Serial.println("characteristic value read");
-
-      byte yaw = 0;
-      YawSlave.readValue(yaw);
-      Serial.println("Printing IMU axis : ");
-      Serial.println("Yaw : ");
-      Serial.println(yaw);
-
-
-     } 
-     else {
-      Serial.println("error reading characteristic value");
-     }
+        Serial.print(myMinutes);
+        Serial.print(",");
+        Serial.print(i+1);
+        printChar(yaw, pitch, roll);
+        peripheral.disconnect();
+        delay(100);
+        
+      }   
+    }
+    imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
+    //Affichage master
+    Serial.print(myMinutes);
+    Serial.print(",");
+    Serial.print("7");
+    Serial.print(",");
+    Serial.print(euler.x()); //Yaw
+    Serial.print(",");
+    Serial.print(euler.y()); //Pitch
+    Serial.print(",");
+    Serial.println(euler.z()); //Roll
     
+ /* }
+    else{
+          peripheral.disconnect();
+          return;
+        }*/
+  
+  BLE.scan();
+//  Serial.println("rescan");
 
-    delay(100);*/
-  }
-
-  Serial.println("Peripheral disconnected");
 }
