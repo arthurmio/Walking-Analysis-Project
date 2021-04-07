@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2021-03-14T17:37:54Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.6.2"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "Walking_analysis_design"
+        },
+        "Owner": "Matheo Gourdon <matheo.gourdon@edu.esiee.fr>",
+        "Size": {
+            "X": 62.23,
+            "Y": 59.69
+        }
+    }
+}
