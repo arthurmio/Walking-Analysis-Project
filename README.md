@@ -13,21 +13,39 @@ Afin d'utiliser correctement le prototype veuillez vous référer à la notice d
 
 # Arborescence
 Arduino
+    
     |
-	----- Central.ino
-	----- Peripherals.ino
+	
+    ----- Central.ino
+	
+    ----- Peripherals.ino
+
 Documentation
+    
     |
-	----- Notice utilisation
-	----- Rapport analyse de la marche
-	----- Présentation finale projet
+	
+    ----- Notice utilisation
+	
+    ----- Rapport analyse de la marche
+	
+    ----- Présentation finale projet
+
 Eagle
-    |
-	----- Gerber Files
+
+   |
+
+   ----- Gerber Files
+
 Sketch Up
+
     |
-	----- boitier.stl
+    
+    ----- boitier.stl
+
 Python
+
     |
-	----- interface.py
-	----- serie.py
+
+    ----- interface.py
+	
+    ----- serie.py
