@@ -9,4 +9,25 @@ Ce prototype d'analyse propose une solution d'analyse de la marche sans fil à l
 
 
 # How to use it
-Afin d'utiliser correctement le prototype veuillez vous référer à la notice d'utilisation : (disponible prochainement ...)
+Afin d'utiliser correctement le prototype veuillez vous référer à la notice d'utilisation dans le répertoire "Documentation".
+
+# Arborescence
+Arduino
+    |
+	----- Central.ino
+	----- Peripherals.ino
+Documentation
+    |
+	----- Notice utilisation
+	----- Rapport analyse de la marche
+	----- Présentation finale projet
+Eagle
+    |
+	----- Gerber Files
+Sketch Up
+    |
+	----- boitier.stl
+Python
+    |
+	----- interface.py
+	----- serie.py

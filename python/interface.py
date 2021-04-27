@@ -107,7 +107,7 @@ def serialConnect():
 		Pitch = float(splitPacket[3])
 		Roll  = float(splitPacket[4])
 		if(index==1):
-			x_vals1.append(temps)
+			x_vals1.append(temps) 
 			y_vals11.append(Yaw)
 			y_vals12.append(Pitch)
 			y_vals13.append(Roll)
